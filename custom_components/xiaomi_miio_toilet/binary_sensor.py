@@ -34,15 +34,19 @@ SERVICE_SCHEMA_STATUS = SERVICE_SCHEMA.extend(
 )
 
 SERVICE_TO_METHOD = {
-    "flush_on": {
+    "flush_on": { #冲水
         "method": "flush_on",
         "schema": SERVICE_SCHEMA,
     },
-    "work_seatheat": {
+    "bubble_shield_on": { #防臭泡沫
+        "method": "bubble_shield_on",
+        "schema": SERVICE_SCHEMA,
+    },
+    "work_seatheat": { #座圈加热
         "method": "work_seatheat",
         "schema": SERVICE_SCHEMA_STATUS,
     },
-    "work_night_led": {
+    "work_night_led": { #灯
         "method": "work_night_led",
         "schema": SERVICE_SCHEMA_STATUS,
     }
@@ -141,6 +145,12 @@ class XjxToilet(BinarySensorEntity):
     async def flush_on(self,**kwargs):
         try:
             self._device.send('flush_on', [])
+        except DeviceException:
+            raise PlatformNotReady
+
+    async def bubble_shield_on(self,**kwargs):
+        try:
+            self._device.send('bubble_shield_on', [])
         except DeviceException:
             raise PlatformNotReady
 
